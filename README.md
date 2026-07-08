@@ -8,29 +8,34 @@
 
 1. [Overview](#overview)
 2. [Requirements](#requirements)
-3. [First launch](#first-launch)
-4. [Connecting your MDM sources](#connecting-your-mdm-sources)
+3. [Installation](#installation)
+4. [First launch](#first-launch)
+5. [Connecting your MDM sources](#connecting-your-mdm-sources)
    - [Jamf Pro](#jamf-pro)
    - [Jamf School](#jamf-school)
    - [Apple School Manager / Apple Business Manager](#apple-school-manager--apple-business-manager)
-5. [Navigating the main window](#navigating-the-main-window)
+6. [Navigating the main window](#navigating-the-main-window)
    - [Header and connection status](#header-and-connection-status)
    - [Device type and warranty charts](#device-type-and-warranty-charts)
    - [Device table](#device-table)
    - [Searching and filtering](#searching-and-filtering)
-6. [Device detail view](#device-detail-view)
+7. [Device detail view](#device-detail-view)
    - [Installed apps](#installed-apps)
-7. [Generating reports](#generating-reports)
+8. [Generating reports](#generating-reports)
    - [Filtering the report view](#filtering-the-report-view)
    - [Exporting to CSV or PDF](#exporting-to-csv-or-pdf)
-8. [Static group management](#static-group-management)
+9. [Static group management](#static-group-management)
    - [Adding devices to an existing group](#adding-devices-to-an-existing-group)
    - [Creating a new static group](#creating-a-new-static-group)
-9. [Clearing MDM assignments in ASM/ABM](#clearing-mdm-assignments-in-asmabm)
-10. [Remote commands](#remote-commands)
-11. [Appearance settings](#appearance-settings)
-12. [Credential management and security](#credential-management-and-security)
-13. [Troubleshooting](#troubleshooting)
+10. [Clearing MDM assignments in ASM/ABM](#clearing-mdm-assignments-in-asmabm)
+11. [Remote commands](#remote-commands)
+12. [Appearance settings](#appearance-settings)
+13. [Credential management and security](#credential-management-and-security)
+14. [Logging](#logging)
+15. [Troubleshooting](#troubleshooting)
+16. [Getting help](#getting-help)
+17. [Dependencies](#dependencies)
+18. [License, copyright, and privacy](#license-copyright-and-privacy)
 
 ---
 
@@ -65,6 +70,14 @@ Orchard View is not a replacement for your MDM. Jamf Pro and Jamf School remain 
 
 ---
 
+## Installation
+
+1. Download `Orchard View.pkg` from [GitHub Releases](https://github.com/Jamf-Concepts/orchard-view/releases/latest).
+2. Double-click the `.pkg` and follow the installer prompts. The package installs Orchard View to `/Applications`.
+3. Launch **Orchard View**. 
+
+---
+
 ## First launch
 
 When you open Orchard View for the first time, a welcome screen appears. Click **Get Started** to open the API Settings sheet and begin connecting your MDM sources. You can dismiss the welcome screen without configuring anything and return to settings at any time using the **API Settings** button in the top-right corner of the main window.
@@ -83,12 +96,24 @@ Orchard View uses **OAuth 2.0 Client Credentials** to authenticate with Jamf Pro
 
 1. In Jamf Pro, go to **Settings → API Roles and Clients**.
 2. Create an **API Role** with at minimum the following permissions:
-   - Read Computers
-   - Read Mobile Devices
-   - Read Computer Groups
-   - Read Mobile Device Groups
-   - Send Computer Remote Commands
-   - Send Mobile Device Remote Commands
+
+   | Feature | Required Permission |
+   |---|---|
+   | Device inventory | Read Computers |
+   | Device inventory | Read Mobile Devices |
+   | Static group listing | Read Static Computer Groups |
+   | Static group listing | Read Static Mobile Device Groups |
+   | Create new static group (Report → Create New) | Create Static Computer Groups |
+   | Add devices to existing group (Report → Existing Group) | Update Static Computer Groups |
+   | Create new static group (mobile) | Create Static Mobile Device Groups |
+   | Add devices to existing group (mobile) | Update Static Mobile Device Groups |
+   | Remote Lock (computers) | Send Computer Remote Lock Command |
+   | Remote Restart (computers) | Send Computer Restart Command |
+   | Remote Erase (computers) | Send Computer Remote Wipe Command |
+   | Remote Lock (mobile) | Send Mobile Device Remote Lock Command |
+   | Remote Restart (mobile) | Send Mobile Device Restart Device Command |
+   | Remote Erase (mobile) | Send Mobile Device Remote Wipe Command |
+
 3. Create an **API Client**, assign the role above, and note the **Client ID** and **Client Secret**.
 
 **In the Jamf Pro tab of API Settings:**
@@ -361,11 +386,17 @@ All credentials are stored in the **macOS Keychain** — they are never written 
 |---|---|
 | Jamf Pro | Server URL, Client ID, Client Secret |
 | Jamf School | Server URL, Network ID, API Key |
-| ASM/ABM | Client ID, Key ID, Organisation Name, Scope, Private Key (PEM), Key Filename |
+| ASM/ABM | Client ID, Key ID, Organization Name, Scope, Private Key (PEM), Key Filename |
 
 To remove credentials for a source, open **API Settings**, select the relevant tab, and click **Disconnect**. This deletes all stored keys for that source from the Keychain and removes its devices from the table on next refresh.
 
 > **Private key security:** The ASM/ABM private key is stored in the Keychain like all other credentials. The original `.pem` file is no longer needed after import and can be stored securely offline. Orchard View never transmits the private key — it is used only to sign JWT assertions locally before the token exchange with `account.apple.com`.
+
+---
+
+## Logging
+
+Orchard View writes diagnostic output to the system console via `print()` during API requests, connection tests, and remote command execution. To view logs while reproducing an issue, open **Console.app**, select your Mac under **Devices**, and search for "Orchard View" or filter by process name. Diagnostic output includes request status codes and abbreviated response bodies; no credentials, tokens, or private key material are ever logged.
 
 ---
 
@@ -414,6 +445,34 @@ Deduplication matches on serial number. Devices with a missing or placeholder se
 - Jamf Pro: verify the API role includes Read Computers and Read Mobile Devices.
 - Jamf School: verify the Network ID is correct (numeric, from Organisation → Details, not the URL subdomain).
 - The app will display a warning banner: *"Connected but no devices were returned. Check API permissions."*
+
+---
+
+## Getting help
+
+If you run into an issue that isn't covered above, open an issue in this repository or reach out in the `#team-jamf-concepts-developers` Slack channel.
+
+---
+
+## Dependencies
+
+Orchard View uses one third-party dependency, pulled in via Swift Package Manager:
+
+| Package | Version | License | Home repository | License file |
+|---|---|---|---|---|
+| TelemetryDeck SwiftSDK | 2.14.1 | MIT | [github.com/TelemetryDeck/SwiftSDK](https://github.com/TelemetryDeck/SwiftSDK) | [LICENSE](https://github.com/TelemetryDeck/SwiftSDK/blob/main/LICENSE) |
+
+TelemetryDeck is used for anonymous launch analytics. It can be disabled at any time — see **Appearance settings** for the telemetry opt-out toggle.
+
+---
+
+## License, copyright, and privacy
+
+Orchard View is a Jamf Concepts project. Source code and internal tooling remain private under the [Jamf Concepts Use Agreement](https://resources.jamf.com/documents/jamf-concept-projects-use-agreement.pdf).
+
+Copyright 2026, Jamf Software LLC.
+
+See the [Jamf Privacy Policy](https://www.jamf.com/trust-center/privacy/privacy-policy/) for information on data handling.
 
 ---
 

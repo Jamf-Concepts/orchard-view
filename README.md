@@ -142,7 +142,7 @@ Orchard View uses **HTTP Basic Auth** (Network ID + API Key) for Jamf School.
 | Field | Value |
 |---|---|
 | Server URL | Your Jamf School instance URL, e.g. `https://yourschool.jamfcloud.com` |
-| Network ID | The numeric Network ID from Organisation → Details |
+| Network ID | The numeric Network ID from Organization → Details |
 | API Key | Your API key from Settings → API |
 
 Click **Test Connection** to verify, then **Save**.
@@ -302,7 +302,7 @@ Use the **row checkboxes** to select specific devices for export or group operat
 
 **Export CSV** — saves a comma-separated file containing all visible (filtered) devices. Columns include: Device Name, Serial Number, Model Identifier, Hardware, RAM/OS, Warranty Status, Warranty Expiry, Warranty Remaining, Coverage Type, Groups, Source, and Last Check-in.
 
-**Export PDF** — saves a formatted A4 landscape PDF report. The report always renders in light mode for print legibility. The first page includes a title, generation timestamp, and device count. Subsequent pages include a continuation header and page numbers. Warranty status cells are colour-coded (green / orange / red / grey).
+**Export PDF** — saves a formatted A4 landscape PDF report. The report always renders in light mode for print legibility. The first page includes a title, generation timestamp, and device count. Subsequent pages include a continuation header and page numbers. Warranty status cells are color-coded (green / orange / red / grey).
 
 Both export dialogs present a standard macOS Save panel where you can choose the filename and destination. Files are named `OrchardView_Report_YYYY-MM-DD` by default.
 
@@ -316,7 +316,7 @@ The sheet has two modes, selectable at the top:
 
 ### Adding devices to an existing group
 
-**Existing Group** mode fetches all static groups from your connected Jamf sources. Groups are organised into sections:
+**Existing Group** mode fetches all static groups from your connected Jamf sources. Groups are organized into sections:
 
 - Jamf Pro — Computers
 - Jamf Pro — Mobile Devices
@@ -342,7 +342,7 @@ ASM/ABM devices cannot be added to static groups and are excluded automatically.
 
 When ASM/ABM is connected, devices that have an MDM server assignment in Apple's systems show an **apple.logo** indicator in the report table. You can clear these assignments in two ways:
 
-**From the report view:** Select the devices and click **Clear ASM Assignment (N)**. A confirmation dialog summarises the action. Once confirmed, Orchard View calls `POST /v1/orgDeviceActivities` in the ASM/ABM API with `activityType: UNASSIGN_DEVICES` for each affected MDM server.
+**From the report view:** Select the devices and click **Clear ASM Assignment (N)**. A confirmation dialog summarizes the action. Once confirmed, Orchard View calls `POST /v1/orgDeviceActivities` in the ASM/ABM API with `activityType: UNASSIGN_DEVICES` for each affected MDM server.
 
 **From the device detail view:** In the Apple School Manager section of the detail sheet, click **Clear MDM Server Assignment**.
 
@@ -416,7 +416,7 @@ Orchard View writes diagnostic output to the system console via `print()` during
 
 ### Source attribution is incorrect (devices show wrong MDM source)
 
-Orchard View resolves MDM source by matching the ASM-assigned server name against the subdomain of your configured Jamf URLs (e.g. `blakely` from `blakely.jamfcloud.com`). If both your Jamf Pro and Jamf School URLs share the same subdomain prefix, attribution may be ambiguous. Orchard View uses a longest-match algorithm to select the most specific match. Ensure your server URLs in API Settings are set to the correct and distinct instance URLs.
+Orchard View resolves MDM source by matching the ASM-assigned server name against the hostname of your configured Jamf URLs (e.g. the `myorg` part of `myorg.jamfcloud.com`). If both your Jamf Pro and Jamf School URLs share the same subdomain prefix, attribution may be ambiguous. Orchard View uses longest-match to select the most specific match. Ensure your server URLs in API Settings are set to the correct and distinct instance URLs.
 
 ### Devices appear duplicated
 
@@ -438,19 +438,19 @@ Deduplication matches on serial number. Devices with a missing or placeholder se
 
 - Verify the ASM/ABM credentials are still valid (tokens expire; re-test the connection if needed).
 - Ensure the API account has permission to manage device activities in ASM/ABM.
-- Devices that are already unassigned will be silently skipped — this is expected behaviour.
+- Devices that are already unassigned will be silently skipped — this is expected behavior.
 
 ### Connection test passes but fetch returns zero devices
 
 - Jamf Pro: verify the API role includes Read Computers and Read Mobile Devices.
-- Jamf School: verify the Network ID is correct (numeric, from Organisation → Details, not the URL subdomain).
+- Jamf School: verify the Network ID is correct (numeric, from Organization → Details, not the URL subdomain).
 - The app will display a warning banner: *"Connected but no devices were returned. Check API permissions."*
 
 ---
 
 ## Getting help
 
-If you run into an issue that isn't covered above, open an issue in this repository or reach out in the `#team-jamf-concepts-developers` Slack channel.
+If you run into an issue that isn't covered above, reach out in the `#team-jamf-concepts-developers` Slack channel.
 
 ---
 
@@ -466,14 +466,12 @@ TelemetryDeck is used for anonymous launch analytics. It can be disabled at any 
 
 ---
 
-## License, copyright, and privacy
-
-Orchard View is a Jamf Concepts project. Source code and internal tooling remain private under the [Jamf Concepts Use Agreement](https://resources.jamf.com/documents/jamf-concept-projects-use-agreement.pdf).
+## Terms of Use
 
 Copyright 2026, Jamf Software LLC.
 
-See the [Jamf Privacy Policy](https://www.jamf.com/trust-center/privacy/privacy-policy/) for information on data handling.
+The Orchard View application is available under the terms of the [Jamf Concepts Use Agreement](https://resources.jamf.com/documents/jamf-concept-projects-use-agreement.pdf).
 
----
+Please see [Jamf's Privacy Policy](https://www.jamf.com/trust-center/privacy/privacy-policy/) for information on data handling.
 
-*Orchard View — authored by Eric Blakely*
+We welcome your feedback submitted via [GitHub Issues](https://github.com/Jamf-Concepts/orchard-view/issues).

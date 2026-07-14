@@ -31,11 +31,11 @@
 11. [Remote commands](#remote-commands)
 12. [Appearance settings](#appearance-settings)
 13. [Credential management and security](#credential-management-and-security)
-14. [Logging](#logging)
-15. [Troubleshooting](#troubleshooting)
-16. [Getting help](#getting-help)
-17. [Dependencies](#dependencies)
-18. [License, copyright, and privacy](#license-copyright-and-privacy)
+14. [Troubleshooting](#troubleshooting)
+    - [Logging](#logging)
+15. [Dependencies and Software Bill of Materials](#dependencies-and-software-bill-of-materials)
+16. [Terms of Use](#terms-of-use)
+17. [Help and Feedback](#help-and-feedback)
 
 ---
 
@@ -63,7 +63,7 @@ Orchard View is not a replacement for your MDM. Jamf Pro and Jamf School remain 
 
 ## Requirements
 
-- macOS 13 Ventura or later (Apple Silicon or Intel)
+- macOS 13 Ventura or later (Apple silicon or Intel)
 - Network access to your Jamf Pro and/or Jamf School instance
 - API credentials for each source you want to connect (see [Connecting your MDM sources](#connecting-your-mdm-sources))
 - An ASM or ABM account with an API account configured (optional, for warranty data and MDM assignment management)
@@ -394,13 +394,11 @@ To remove credentials for a source, open **API Settings**, select the relevant t
 
 ---
 
-## Logging
-
-Orchard View writes diagnostic output to the system console via `print()` during API requests, connection tests, and remote command execution. To view logs while reproducing an issue, open **Console.app**, select your Mac under **Devices**, and search for "Orchard View" or filter by process name. Diagnostic output includes request status codes and abbreviated response bodies; no credentials, tokens, or private key material are ever logged.
-
----
-
 ## Troubleshooting
+
+### Logging
+
+You can see the app's log messages in Console.app by searching for "Orchard View." Debug logging can be enabled in Orchard View under General Settings.  
 
 ### No devices appear after connecting
 
@@ -448,21 +446,15 @@ Deduplication matches on serial number. Devices with a missing or placeholder se
 
 ---
 
-## Getting help
-
-If you run into an issue that isn't covered above, reach out in the `#team-jamf-concepts-developers` Slack channel.
-
----
-
-## Dependencies
+## Dependencies and Software Bill of Materials
 
 Orchard View uses one third-party dependency, pulled in via Swift Package Manager:
 
 | Package | Version | License | Home repository | License file |
 |---|---|---|---|---|
-| TelemetryDeck SwiftSDK | 2.14.1 | MIT | [github.com/TelemetryDeck/SwiftSDK](https://github.com/TelemetryDeck/SwiftSDK) | [LICENSE](https://github.com/TelemetryDeck/SwiftSDK/blob/main/LICENSE) |
+| TelemetryDeck SwiftSDK | 2.14.1 | MIT | [github](https://github.com/TelemetryDeck/SwiftSDK) | [LICENSE](https://github.com/TelemetryDeck/SwiftSDK/blob/main/LICENSE) |
 
-TelemetryDeck is used for anonymous launch analytics. It can be disabled at any time — see **Appearance settings** for the telemetry opt-out toggle.
+We use TelemetryDeck to know how often the app is opened. That helps us decide if we should keep working on the idea. The information is anonymous and you can disable it in General Settings. 
 
 ---
 
@@ -473,5 +465,8 @@ Copyright 2026, Jamf Software LLC.
 The Orchard View application is available under the terms of the [Jamf Concepts Use Agreement](https://resources.jamf.com/documents/jamf-concept-projects-use-agreement.pdf).
 
 Please see [Jamf's Privacy Policy](https://www.jamf.com/trust-center/privacy/privacy-policy/) for information on data handling.
+
+
+## Help and Feedback
 
 We welcome your feedback submitted via [GitHub Issues](https://github.com/Jamf-Concepts/orchard-view/issues).

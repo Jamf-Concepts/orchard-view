@@ -2,6 +2,8 @@
 
 > Enriched, unified visibility into your Apple device fleet across Jamf Pro, Jamf School, and Apple School/Business Manager.
 
+![Orchard View main screen](screenshots/main-screen-light.png)
+
 ---
 
 ## Table of contents
